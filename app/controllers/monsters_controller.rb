@@ -2,7 +2,7 @@ class MonstersController < ApiController
     before_action :require_login, except: [:index, :show]
 
     def index
-        monsters = Monster.All
+        monsters = Monster.all
         render json: { monsters: monsters }
     end
 
