@@ -3,5 +3,5 @@ Rails.application.routes.draw do
   delete "/logout" => "sessions#destroy"
   resources :users
   get "/profile" => "users#profile"
-  
+  resources :monsters
 end
