@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import { BrowswerRouter as Router, Link, Redirect, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Link, Redirect, Route} from 'react-router-dom';
 import Auth from './modules/Auth';
+import MonsterList from './components/MonsterList';
 
 class App extends Component {
   constructor() {
@@ -14,8 +15,12 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-      </div>
+      <Router>
+        <div className="App">
+          <Route exact path="/monsters" render={() => <MonsterList />} />
+        </div>
+      </Router>
+
     );
   }
 }
