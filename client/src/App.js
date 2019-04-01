@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Link, Redirect, Route} from 'react-router-dom'
 import Auth from './modules/Auth';
 import MonsterList from './components/MonsterList';
 import RegisterForm from './components/RegisterForm';
+import LoginForm from './components/LoginForm';
 
 class App extends Component {
   constructor() {
@@ -13,6 +14,8 @@ class App extends Component {
       auth: Auth.isUserAuthenticated()
     };
     this.handleRegisterSubmit = this.handleRegisterSubmit.bind(this);
+    this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+
   }
 
   handleRegisterSubmit(e, data) {
@@ -36,6 +39,24 @@ class App extends Component {
       })
   }
 
+  handleLoginSubmit(e, data) {
+    e.preventDefault();
+    fetch('/login', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+      .then(res => {
+        console.log(res);
+        Auth.authenticateToken(res.token);
+        this.setState({
+          auth: Auth.isUserAuthenticated()
+        });
+      }).catch(err => console.log(err));
+  }
+
   render() {
     return (
       <Router>
@@ -43,7 +64,14 @@ class App extends Component {
           <Route exact path="/monsters" render={() => <MonsterList />} />
           <Route 
             exact path="/register" 
-            render={() => <RegisterForm handleRegisterSubmit={this.handleRegisterSubmit} /> } />
+            render={() => <RegisterForm 
+            handleRegisterSubmit={this.handleRegisterSubmit} /> } 
+          />
+          <Route 
+            exact path="/login"
+            render={() => <LoginForm 
+            handleLoginSubmit={this.handleLoginSubmit} /> }
+          />  
         </div>
       </Router>
 
