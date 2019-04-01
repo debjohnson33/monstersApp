@@ -6,12 +6,13 @@ import Auth from './modules/Auth';
 import MonsterList from './components/MonsterList';
 import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm';
+import Dashboard from './components/Dashboard';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      auth: Auth.isUserAuthenticated()
+      auth: Auth.isUserAuthenticated(),
     };
     this.handleRegisterSubmit = this.handleRegisterSubmit.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
@@ -32,7 +33,7 @@ class App extends Component {
       .then(res => {
         Auth.authenticateToken(res.token);
         this.setState({
-          auth: Auth.isUserAuthenticated()
+          auth: Auth.isUserAuthenticated(),
         });
       }).catch(err => {
         console.log(err);
@@ -52,7 +53,7 @@ class App extends Component {
         console.log(res);
         Auth.authenticateToken(res.token);
         this.setState({
-          auth: Auth.isUserAuthenticated()
+          auth: Auth.isUserAuthenticated(),
         });
       }).catch(err => console.log(err));
   }
@@ -61,16 +62,28 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
+        <div className="nav">
+          <Link to="/login">Login</Link>
+          <Link to="/register">Register</Link>
+          <Link to="/dash">Dash</Link>
+          <Link to="/monsters">Monsters</Link>          
+        </div>
           <Route exact path="/monsters" render={() => <MonsterList />} />
           <Route 
             exact path="/register" 
-            render={() => <RegisterForm 
-            handleRegisterSubmit={this.handleRegisterSubmit} /> } 
+            render={() => (this.state.auth)
+              ? <Redirect to="/dash" />
+              : <RegisterForm handleRegisterSubmit={this.handleRegisterSubmit} /> } 
           />
           <Route 
             exact path="/login"
-            render={() => <LoginForm 
-            handleLoginSubmit={this.handleLoginSubmit} /> }
+            render={() => (this.state.auth)
+              ? <Redirect to="/dash" />
+              : <LoginForm handleLoginSubmit={this.handleLoginSubmit} /> }
+          />
+          <Route
+            exact path="/dash"
+            render={() => <Dashboard />}
           />  
         </div>
       </Router>
