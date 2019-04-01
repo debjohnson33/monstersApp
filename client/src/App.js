@@ -16,7 +16,7 @@ class App extends Component {
     };
     this.handleRegisterSubmit = this.handleRegisterSubmit.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
-
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   handleRegisterSubmit(e, data) {
@@ -58,6 +58,21 @@ class App extends Component {
       }).catch(err => console.log(err));
   }
 
+  handleLogout() {
+    fetch('/logout', {
+      method: 'DELETE',
+      headers: {
+        token: Auth.getToken(),
+        'Authorization': `Token ${Auth.getToken()}`
+      }
+    }).then(res => {
+      Auth.deauthenticateUser();
+      this.setState({
+        auth: Auth.isUserAuthenticated()
+      })
+    }).catch(err => console.log(err));
+  }
+
   render() {
     return (
       <Router>
@@ -66,7 +81,8 @@ class App extends Component {
           <Link to="/login">Login</Link>
           <Link to="/register">Register</Link>
           <Link to="/dash">Dash</Link>
-          <Link to="/monsters">Monsters</Link>          
+          <Link to="/monsters">Monsters</Link> 
+          <span onClick={this.handleLogout}>Logout</span>       
         </div>
           <Route exact path="/monsters" render={() => <MonsterList />} />
           <Route 
