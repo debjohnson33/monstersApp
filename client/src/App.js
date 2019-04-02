@@ -78,10 +78,10 @@ class App extends Component {
       <Router>
         <div className="App">
         <div className="nav">
-          <Link to="/login">Login</Link>
-          <Link to="/register">Register</Link>
-          <Link to="/dash">Dash</Link>
-          <Link to="/monsters">Monsters</Link> 
+          <Link className="link" to="/login">Login</Link>
+          <Link className="link" to="/register">Register</Link>
+          <Link className="link" to="/dash">Dash</Link>
+          <Link className="link" to="/monsters">Monsters</Link> 
           <span onClick={this.handleLogout}>Logout</span>       
         </div>
           <Route exact path="/monsters" render={() => <MonsterList />} />
